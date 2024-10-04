@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Game</title>
+</head>
+<body>
+    <h1>number guessing game</h1>
+    <label for="guessField">number? </label>
+    <input type="text" id="guessField">
+    <input type="submit" value="check" id="guessSubmit">
+    <p id="guesses"></p>
+    <p id="information"></p>
+    <p id="information2"></p>
+
+    <script>
+        // 在此处嵌入 JavaScript 代码
+        function game() {
+            let randomNumber = Math.floor(Math.random() * 100) + 1;
+            let count = 0;
+            const guesses = [];
+            
+            const guessField = document.getElementById('guessField');
+            const guessSubmit = document.getElementById('guessSubmit');
+            const guessesDisplay = document.getElementById('guesses');
+            const information = document.getElementById('information');
+            const information2 = document.getElementById('information2');
+
+            guessSubmit.addEventListener('click', checkGuess);
+
+            function checkGuess() {
+                let usernum = Number(guessField.value);
+                count++;
+                
+                if (isNaN(usernum) || usernum < 1 || usernum > 100) {
+                    information.textContent = 'please enter a number！(1~100)';
+                    return;
+                }
+                
+                guesses.push(usernum);
+                guessesDisplay.textContent = 'the number you guessed: ' + guesses.join(', ');
+
+                if (usernum === randomNumber) {
+                    if (confirm('bingo！want to play again?')) {
+                        resetGame();
+                    }
+                } else if (count === 10) {
+                    information2.textContent = 'OMG!no chance';
+                    if (confirm('OMG!no chance！want to play again?')) {
+                        resetGame();
+                    }
+                } else {
+                    if (usernum < randomNumber) {
+                        information.textContent = 'too low！';
+                    } else {
+                        information.textContent = 'too high！';
+                    }
+                }
+                
+                guessField.value = '';
+            
+            }
+
+            function resetGame() {
+                guesses.length = 0;
+                guessesDisplay.textContent = '';
+                information.textContent = '';
+                information2.textContent = '';
+                guessField.value = '';
+                randomNumber = Math.floor(Math.random() * 100) + 1;
+                count = 0;
+            }
+        }
+
+        game();
+    </script>
+</body>
+</html>
